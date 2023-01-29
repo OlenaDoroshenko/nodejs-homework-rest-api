@@ -38,8 +38,7 @@ const updateContact = async (id, { name, phone, email, favorite }) => {
 };
 
 const updateStatusContact = async (id, {favorite}) => {
-  console.log(favorite);
-  const contact = await Contact.findOneAndUpdate(
+const contact = await Contact.findOneAndUpdate(
     { _id: id },
     { $set: { favorite } },
     {new: true}
@@ -47,7 +46,6 @@ const updateStatusContact = async (id, {favorite}) => {
   if (!contact) {
     throw new ParameterError(`Not found!`);
   }
-  console.log(contact);
   return contact;
 }
 

@@ -1,6 +1,6 @@
 const contacts = require("../services/contacts");
 const mongoose = require("mongoose");
-const { ValidationError, ParameterError } = require("../helpers/errors");
+const { ParameterError } = require("../helpers/errors");
 
 const getAllContactsController = async (req, res) => {
   const allContacts = await contacts.listContacts();
@@ -52,8 +52,8 @@ const updateStatusContactController = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ParameterError(`Invalid ID`);
   }
-  
-  if (!req.body.hasOwnProperty('favorite')) {
+
+  if (!('favorite' in req.body)) {
     throw new ParameterError(`Missing field favorite`);
   }
   const updatedContact = await contacts.updateStatusContact(id, req.body);
