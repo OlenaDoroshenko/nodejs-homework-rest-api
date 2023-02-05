@@ -6,9 +6,8 @@ const { authUser } = require("../services/users");
 
 const authMiddleware = async (req, res, next) => {
   try {
-    
     const { authorization } = req.headers;
-   
+
     if (!authorization) {
       next(
         new NotAuthorizedError(

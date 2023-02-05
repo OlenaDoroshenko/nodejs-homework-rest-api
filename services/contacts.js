@@ -1,15 +1,20 @@
 const { Contact } = require("../db/contactModel");
 const { ParameterError } = require("../helpers/errors");
 
-const listContacts = async (owner,page,limit, favorite=null) => {
-  const skip = page <= 0 ? 0 : (page-1) * limit;
+const listContacts = async (owner, page, limit, favorite = null) => {
+  const skip = page <= 0 ? 0 : (page - 1) * limit;
   const filter = favorite ? { owner, favorite } : { owner };
-  const contacts = await Contact.find(filter, {__v: 0, owner: 0}).skip(skip).limit(limit)
+  const contacts = await Contact.find(filter, { __v: 0, owner: 0 })
+    .skip(skip)
+    .limit(limit);
   return contacts;
 };
 
 const getContactById = async (id, owner) => {
-  const contact = await Contact.findOne({ _id: id, owner }, {__v: 0, owner: 0});
+  const contact = await Contact.findOne(
+    { _id: id, owner },
+    { __v: 0, owner: 0 }
+  );
   if (!contact) {
     throw new ParameterError(`Not found!`);
   }
@@ -31,7 +36,7 @@ const updateContact = async (id, { name, phone, email, favorite }, owner) => {
   const contact = await Contact.findOneAndUpdate(
     { _id: id, owner },
     { $set: { name, phone, email, favorite } },
-    {new: true},
+    { new: true }
   );
   if (!contact) {
     throw new ParameterError(`Not found!`);
@@ -39,17 +44,17 @@ const updateContact = async (id, { name, phone, email, favorite }, owner) => {
   return contact;
 };
 
-const updateStatusContact = async (id, {favorite}, owner) => {
-const contact = await Contact.findOneAndUpdate(
-    { _id: id,owner },
+const updateStatusContact = async (id, { favorite }, owner) => {
+  const contact = await Contact.findOneAndUpdate(
+    { _id: id, owner },
     { $set: { favorite } },
-    {new: true}
+    { new: true }
   );
   if (!contact) {
     throw new ParameterError(`Not found!`);
   }
   return contact;
-}
+};
 
 module.exports = {
   listContacts,
