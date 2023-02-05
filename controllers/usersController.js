@@ -19,8 +19,8 @@ const userLogoutController = async (req, res) => {
 };
 
 const userCurrentController = async (req, res) => {
-  const user = await users.currentUser(req.user._id);
-  res.json(user);
+  const user = req.user;
+  res.json({email: user.email, subscription: user.subscription});
 };
 
 const userSubscriptionController = async (req, res) => {

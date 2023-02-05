@@ -5,9 +5,7 @@ const { ValidationError, ParameterError } = require("../helpers/errors");
 const contactValidationSchema = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(30).required(),
-    phone: Joi.string()
-      .regex(/^[0-9]{10}$/)
-      .required(),
+    phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required(),
     email: Joi.string().email().required(),
     favorite: Joi.boolean(),
   });

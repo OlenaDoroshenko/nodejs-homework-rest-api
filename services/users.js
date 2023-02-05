@@ -34,7 +34,7 @@ const loginUser = async (email, password) => {
     process.env.JWT_SECRET
   );
 
-  const loggedUser = await User.findByIdAndUpdate(user._id, { token }).select({
+  const loggedUser = await User.findByIdAndUpdate(user._id, { token }, { new: true }).select({
     __v: 0,
     password: 0,
     _id: 0,
@@ -43,8 +43,7 @@ const loginUser = async (email, password) => {
 };
 
 const logoutUser = async (id) => {
-  const user = await User.findByIdAndUpdate(id, { token: null });
-  return user;
+  await User.findByIdAndUpdate(id, { token: null });
 };
 
 const authUser = async (id, token) => {
@@ -57,11 +56,6 @@ const authUser = async (id, token) => {
     throw new NotAuthorizedError(`Not Authorized`);
   }
 
-  return user;
-};
-
-const currentUser = async (id) => {
-  const user = await User.findById(id, { email: 1, subscription: 1, _id: 0 });
   return user;
 };
 
@@ -79,6 +73,5 @@ module.exports = {
   loginUser,
   logoutUser,
   authUser,
-  currentUser,
   updateUserSubs,
 };

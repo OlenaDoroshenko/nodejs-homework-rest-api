@@ -4,7 +4,7 @@ const { ValidationError, ParameterError } = require("../helpers/errors");
 const userSignUpSchema = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().regex("^[a-zA-Z0-9]{3,30}$"),
+    password: Joi.string().min(7).required(),
     subscription: Joi.string().valid("starter", "pro", "business").required(),
   });
 
@@ -18,7 +18,7 @@ const userSignUpSchema = (req, res, next) => {
 const userLoginSchema = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().regex("^[a-zA-Z0-9]{3,30}$"),
+    password: Joi.string().min(7).required(),
   });
 
   const { error } = schema.validate(req.body);

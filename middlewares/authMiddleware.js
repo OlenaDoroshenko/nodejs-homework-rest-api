@@ -22,7 +22,7 @@ const authMiddleware = async (req, res, next) => {
       next(new NotAuthorizedError("Not authorized"));
     }
 
-    const { id } = jwt.decode(token, process.env.JWT_SECRET);
+    const { id } = jwt.verify(token, process.env.JWT_SECRET);
     const user = await authUser(id, token);
     req.user = user;
     next();
