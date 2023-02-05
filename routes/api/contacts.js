@@ -2,10 +2,10 @@ const express = require("express");
 // const {response} = require("../../app")
 const router = express.Router();
 const {
-  createContactSchema,
+  contactValidationSchema,
   idValidation,
   favoriteFieldSchema
-} = require('../../middlewares/validationMiddleware');
+} = require('../../middlewares/contactValidationMiddleware');
 const {asyncWrapper} = require('../../helpers/apiHelpers');
 const {
   getAllContactsController,
@@ -15,17 +15,19 @@ const {
   updateContactController,
   updateStatusContactController,
 } = require("../../controllers/contactsController");
+const {authMiddleware} = require('../../middlewares/authMiddleware')
 
+router.use(authMiddleware);
 
 router.get("/", asyncWrapper(getAllContactsController));
 
 router.get("/:contactId", idValidation, asyncWrapper(getContactByIdController));
 
-router.post("/", createContactSchema, asyncWrapper(addContactController));
+router.post("/", contactValidationSchema, asyncWrapper(addContactController));
 
 router.delete("/:contactId", idValidation, asyncWrapper(deleteContactController));
 
-router.put("/:contactId", idValidation, createContactSchema, asyncWrapper(updateContactController));
+router.put("/:contactId", idValidation, contactValidationSchema, asyncWrapper(updateContactController));
 
 router.patch("/:contactId/favorite", idValidation, favoriteFieldSchema, asyncWrapper(updateStatusContactController));
 
