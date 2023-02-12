@@ -2,6 +2,7 @@ const { User } = require("../db/userModel");
 const { NotAuthorizedError, ConflictError } = require("../helpers/errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const gravatar = require('gravatar')
 
 const signUpUser = async (email, password, subscription) => {
   const result = await User.findOne({ email });
@@ -12,6 +13,7 @@ const signUpUser = async (email, password, subscription) => {
     email,
     password: await bcrypt.hash(password, 10),
     subscription,
+    avatarURL: gravatar.url(email),
   });
   await newUser.save();
   return newUser;
@@ -68,10 +70,22 @@ const updateUserSubs = async (id, subscription) => {
   return user;
 };
 
+const updateAvatarUrl = async (id, avatarURL) => {
+  const user = await User.findOneAndUpdate(
+    { _id: id },
+    { $set: { avatarURL } },
+    { new: true }
+  ).select({ email: 1, avatarURL: 1 });
+  return user;
+};
+
+
+
 module.exports = {
   signUpUser,
   loginUser,
   logoutUser,
   authUser,
   updateUserSubs,
+  updateAvatarUrl
 };

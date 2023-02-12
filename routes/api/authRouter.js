@@ -13,8 +13,12 @@ const {
   userLogoutController,
   userCurrentController,
   userSubscriptionController,
+  userAvatarController
 } = require("../../controllers/usersController");
 const { authMiddleware } = require("../../middlewares/authMiddleware");
+const {
+  uploadMiddleware
+} = require("../../middlewares/filesUploadMiddleware");
 
 router.post("/signup", userSignUpSchema, asyncWrapper(userSignUpController));
 
@@ -30,5 +34,7 @@ router.patch(
   subscriptionSchema,
   asyncWrapper(userSubscriptionController)
 );
+
+router.patch('/avatars', authMiddleware, uploadMiddleware.single("avatar"), asyncWrapper(userAvatarController));
 
 module.exports = { authRouter: router };
