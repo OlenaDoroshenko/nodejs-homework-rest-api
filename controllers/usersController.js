@@ -1,5 +1,5 @@
 const users = require("../services/users");
-const {updateUserAvatar} = require("../services/avatars")
+const { updateUserAvatar } = require("../services/avatars");
 // const { ParameterError, NotAuthorizedError } = require("../helpers/errors");
 
 const userSignUpController = async (req, res) => {
@@ -21,7 +21,7 @@ const userLogoutController = async (req, res) => {
 
 const userCurrentController = async (req, res) => {
   const user = req.user;
-  res.json({email: user.email, subscription: user.subscription});
+  res.json({ email: user.email, subscription: user.subscription });
 };
 
 const userSubscriptionController = async (req, res) => {
@@ -31,11 +31,9 @@ const userSubscriptionController = async (req, res) => {
 
 const userAvatarController = async (req, res) => {
   const avatarURL = await updateUserAvatar(req.user._id, req.file);
-  console.log(avatarURL);
   const user = await users.updateAvatarUrl(req.user._id, avatarURL);
-  console.log(user);
-  res.json(user)
-}
+  res.json(user);
+};
 
 module.exports = {
   userSignUpController,
@@ -43,5 +41,5 @@ module.exports = {
   userLogoutController,
   userCurrentController,
   userSubscriptionController,
-  userAvatarController
+  userAvatarController,
 };
