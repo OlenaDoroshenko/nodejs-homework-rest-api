@@ -3,7 +3,7 @@ const path = require("node:path");
 const fs = require("node:fs/promises");
 
 const updateUserAvatar = async (id, { path: uploadPath, originalname }) => {
-  const [, extension] = originalname.split(".");
+  const extension = originalname.split(".").pop();
   const newFileName = `${id}.${extension}`;
 
   Jimp.read(uploadPath, (err, image) => {
