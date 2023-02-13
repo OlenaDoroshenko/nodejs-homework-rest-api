@@ -1,6 +1,7 @@
 const Jimp = require("jimp");
 const path = require("node:path");
 const fs = require("node:fs/promises");
+const express = require('express')
 
 const updateUserAvatar = async (id, { path: uploadPath, originalname }) => {
   const extension = originalname.split(".").pop();
@@ -13,7 +14,7 @@ const updateUserAvatar = async (id, { path: uploadPath, originalname }) => {
 
   fs.rename(uploadPath, `public/avatars/${newFileName}`)
 
-  const avatarURL = path.join(`http://localhost:${process.env.PORT}/avatars`, newFileName);
+  const avatarURL = `http://localhost:${process.env.PORT}/avatars/${newFileName}`;
 
   return avatarURL
 };
