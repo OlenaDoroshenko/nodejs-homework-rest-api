@@ -6,6 +6,7 @@ const {
   userSignUpSchema,
   userLoginSchema,
   subscriptionSchema,
+  userVerifyEmailSchema
 } = require("../../middlewares/userValidationMiddleware");
 const {
   userSignUpController,
@@ -13,7 +14,9 @@ const {
   userLogoutController,
   userCurrentController,
   userSubscriptionController,
-  userAvatarController
+  userAvatarController,
+  userVerificationController,
+  userSecondVerificationController
 } = require("../../controllers/usersController");
 const { authMiddleware } = require("../../middlewares/authMiddleware");
 const {
@@ -36,5 +39,8 @@ router.patch(
 );
 
 router.patch('/avatars', authMiddleware, uploadMiddleware.single("avatar"), asyncWrapper(userAvatarController));
+router.post("/verify/:verificationToken", asyncWrapper(userVerificationController));
+router.post("/verify/", userVerifyEmailSchema, asyncWrapper(userSecondVerificationController));
+
 
 module.exports = { authRouter: router };

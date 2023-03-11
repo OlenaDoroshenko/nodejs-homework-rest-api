@@ -39,8 +39,21 @@ const subscriptionSchema = (req, res, next) => {
   next();
 };
 
+const userVerifyEmailSchema = (req, res, next) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+  });
+
+  const { error } = schema.validate(req.body);
+  if (error) {
+    next(new ValidationError(error));
+  }
+  next();
+};
+
 module.exports = {
   userSignUpSchema,
   userLoginSchema,
   subscriptionSchema,
+  userVerifyEmailSchema,
 };

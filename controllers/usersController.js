@@ -35,6 +35,19 @@ const userAvatarController = async (req, res) => {
   res.json(user);
 };
 
+const userVerificationController = async (req, res) => {
+  const {verificationToken} = req.params;
+  const user = await users.verificationConfirmation(verificationToken)
+  res.json(user)
+}
+
+const userSecondVerificationController = async (req, res) => {
+  const {email} = req.body;
+  await users.secondVerificationConfirmation(email);
+  res.json({"message": "Verification email sent"})
+
+}
+
 module.exports = {
   userSignUpController,
   userLoginController,
@@ -42,4 +55,6 @@ module.exports = {
   userCurrentController,
   userSubscriptionController,
   userAvatarController,
+  userVerificationController,
+  userSecondVerificationController
 };
