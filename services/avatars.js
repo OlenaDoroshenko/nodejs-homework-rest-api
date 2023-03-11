@@ -14,7 +14,7 @@ const updateUserAvatar = async (id, { path: uploadPath, originalname }) => {
 
   fs.rename(uploadPath, `public/avatars/${newFileName}`)
 
-  const avatarURL = `http://localhost:${process.env.PORT}/avatars/${newFileName}`;
+  const avatarURL = `/avatars/${newFileName}`;
 
   return avatarURL
 };
