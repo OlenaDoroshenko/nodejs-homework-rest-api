@@ -40,7 +40,7 @@ router.patch(
 
 router.patch('/avatars', authMiddleware, uploadMiddleware.single("avatar"), asyncWrapper(userAvatarController));
 router.post("/verify/:verificationToken", asyncWrapper(userVerificationController));
-router.post("/verify/", userVerifyEmailSchema, asyncWrapper(userSecondVerificationController));
+router.post("/verify", userVerifyEmailSchema, asyncWrapper(userSecondVerificationController));
 
 
 module.exports = { authRouter: router };

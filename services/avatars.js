@@ -1,20 +1,16 @@
 const Jimp = require("jimp");
-const path = require("node:path");
 const fs = require("node:fs/promises");
-const express = require('express')
 
-const updateUserAvatar = async (id, { path: uploadPath, originalname }) => {
-  const extension = originalname.split(".").pop();
-  const newFileName = `${id}.${extension}`;
+const updateUserAvatar = async (id, { path: uploadPath, filename }) => {
 
   Jimp.read(uploadPath, (err, image) => {
     if (err) throw err;
-    image.resize(250, 250).write(`public/avatars/${newFileName}`);
+    image.resize(250, 250).write(`public/avatars/${filename}`);
   });
 
-  fs.rename(uploadPath, `public/avatars/${newFileName}`)
+  fs.unlink(uploadPath)
 
-  const avatarURL = `/avatars/${newFileName}`;
+  const avatarURL = `/avatars/${filename}`;
 
   return avatarURL
 };

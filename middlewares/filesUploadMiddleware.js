@@ -8,8 +8,8 @@ const storage = multer.diskStorage({
       cb(null, FILE_DIR)
     },
     filename: function (req, file, cb) {
-    const [fileName, extension] = file.originalname.split(".")
-      cb(null, `${fileName}.${extension}`)
+    const [, extension] = file.originalname.split(".")
+      cb(null, `${req.user.id}.${extension}`)
     }
   })
   
