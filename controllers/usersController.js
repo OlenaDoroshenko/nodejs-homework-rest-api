@@ -1,4 +1,5 @@
 const users = require("../services/users");
+const { updateUserAvatar } = require("../services/avatars");
 // const { ParameterError, NotAuthorizedError } = require("../helpers/errors");
 
 const userSignUpController = async (req, res) => {
@@ -20,7 +21,7 @@ const userLogoutController = async (req, res) => {
 
 const userCurrentController = async (req, res) => {
   const user = req.user;
-  res.json({email: user.email, subscription: user.subscription});
+  res.json({ email: user.email, subscription: user.subscription });
 };
 
 const userSubscriptionController = async (req, res) => {
@@ -28,10 +29,32 @@ const userSubscriptionController = async (req, res) => {
   res.json(user);
 };
 
+const userAvatarController = async (req, res) => {
+  const avatarURL = await updateUserAvatar(req.user._id, req.file);
+  const user = await users.updateAvatarUrl(req.user._id, avatarURL);
+  res.json(user);
+};
+
+const userVerificationController = async (req, res) => {
+  const {verificationToken} = req.params;
+  const user = await users.verificationConfirmation(verificationToken)
+  res.json(user)
+}
+
+const userSecondVerificationController = async (req, res) => {
+  const {email} = req.body;
+  await users.secondVerificationConfirmation(email);
+  res.json({"message": "Verification email sent"})
+
+}
+
 module.exports = {
   userSignUpController,
   userLoginController,
   userLogoutController,
   userCurrentController,
   userSubscriptionController,
+  userAvatarController,
+  userVerificationController,
+  userSecondVerificationController
 };
